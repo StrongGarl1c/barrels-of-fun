@@ -1,0 +1,23 @@
+h1,
+p,
+img {
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+}
+p {
+  padding-left: 20px;
+  font-size: 26px;
+}
+#grid {
+  display: grid;
+  grid-template-columns: 900px auto;
+}
+#innerGrid {
+  text-align: center;
+}
+#innerGrid p {
+  padding: 0;
+  display: block;
+}
+/* #scoreList {grid-row: 2 / 5;} */
