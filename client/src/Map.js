@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import map from './885059-elwynn_forest.jpg';
 import './style.css';
+import ScoreBoard from './ScoreBoard';
 
 function Map() {
   const [playerName, setPlayerName] = useState('Player 1');
@@ -76,16 +77,19 @@ function Map() {
     }
   }
   return (
-    <div>
-      <h1>{playerName}, Найди Дробителя!</h1>
-      <p>{distanceHint}</p>
-      <img
-        onClick={gameIsFinished ? null : clickHandler}
-        src={map}
-        style={{ height: '600px' }}
-        alt="elwyn forest"
-      ></img>
-    </div>
+    <>
+      <div>
+        <h1>{playerName}, Найди Дробителя!</h1>
+        <p>{distanceHint}</p>
+        <img
+          onClick={gameIsFinished ? null : clickHandler}
+          src={map}
+          style={{ height: '600px' }}
+          alt="elwyn forest"
+        ></img>
+      </div>
+      <ScoreBoard />
+    </>
   );
 }
 
