@@ -10,7 +10,7 @@ function Map() {
     'Кликай по карте, а тут будет подсказка!',
   );
   const [target, setTarget] = useState({
-    x: getRandomNumber(900),
+    x: getRandomNumber(500),
     y: getRandomNumber(600),
   });
   const [gameIsFinished, setGameIsFinished] = useState(false);
@@ -75,6 +75,29 @@ function Map() {
         setGameIsFinished(false);
       }
     }
+
+    // fetch data
+    const data = {
+      name: playerName,
+      score: clicks,
+    };
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+
+    // submit result
+    async function submitResult(response) {
+      response = await fetch('http://localhost:27017/submitResult', options);
+    }
+    submitResult().catch((err, wrn) => {
+      console.error(err);
+      console.warn(wrn);
+    });
   }
   return (
     <>
