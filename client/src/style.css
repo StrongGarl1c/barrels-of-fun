@@ -1,23 +1,14 @@
-h1,
-p,
-img {
-  padding: 0;
-  margin: 0;
-  display: inline-block;
+#map {
+  width: 500px;
+  height: 500px;
+  background-color: gray;
+  position: relative;
 }
-p {
-  padding-left: 20px;
-  font-size: 26px;
+
+.barrel {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-color: rosybrown;
+  transition: left 1s, right 1s, bottom 1s, top 1s;
 }
-#grid {
-  display: grid;
-  grid-template-columns: 900px auto;
-}
-#innerGrid {
-  text-align: center;
-}
-#innerGrid p {
-  padding: 0;
-  display: block;
-}
-/* #scoreList {grid-row: 2 / 5;} */
