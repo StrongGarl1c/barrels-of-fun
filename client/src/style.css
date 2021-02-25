@@ -1,3 +1,13 @@
+body {
+  text-align: center;
+  margin: 0;
+}
+#grid {
+  display: grid;
+  grid-template-columns: auto;
+  justify-content: center;
+}
+
 #map {
   width: 500px;
   height: 500px;
@@ -6,9 +16,44 @@
 }
 
 .barrel {
+  outline: none;
+  border: solid black 2px;
   position: absolute;
   width: 50px;
   height: 50px;
   background-color: rosybrown;
   transition: left 1s, right 1s, bottom 1s, top 1s;
+  cursor: pointer;
+}
+
+@keyframes example {
+  from {
+    background-color: rosybrown;
+  }
+  to {
+    background-color: yellow;
+  }
+}
+
+.barrel:first-child {
+  animation-name: example;
+  animation-duration: 0.5s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: ease-in-out;
+  animation-play-state: running;
+}
+
+.starting-screen {
+  position: absolute;
+  left: 40%;
+  top: 40%;
+}
+
+.starting-screen button {
+  margin-bottom: 10px;
+}
+
+h2 {
+  margin: 0;
 }
