@@ -1,6 +1,7 @@
 body {
   text-align: center;
   margin: 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 #grid {
   display: grid;
@@ -11,24 +12,23 @@ body {
 #map {
   width: 500px;
   height: 500px;
-  background-color: gray;
+  background-image: url('water.jpg');
+  background-size: cover;
   position: relative;
 }
 
 .barrel {
-  outline: none;
-  border: solid black 2px;
+  background-color: rgba(0, 0, 0, 0);
   position: absolute;
   width: 50px;
   height: 50px;
-  background-color: rosybrown;
   transition: left 1s, right 1s, bottom 1s, top 1s;
   cursor: pointer;
 }
 
 @keyframes example {
   from {
-    background-color: rosybrown;
+    background-color: rgba(0, 0, 0, 0);
   }
   to {
     background-color: yellow;
@@ -45,12 +45,15 @@ body {
 }
 
 .starting-screen {
-  position: absolute;
-  left: 40%;
-  top: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .starting-screen button {
+  width: 110px;
   margin-bottom: 10px;
 }
 

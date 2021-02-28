@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import './style.css';
 import Barrel from './Barrel';
 import StartingScreen from './StartingScreen';
+import music from './01_jeremy_soule_reign_of_the_septims_myzuka.fm.mp3';
 
 function Map() {
   const [startingBarrels, setStartingBarrels] = useState(3);
@@ -26,8 +27,8 @@ function Map() {
       })
       .map((item) => {
         return {
-          top: Math.floor(Math.random() * (450 - item.top)),
-          left: Math.floor(Math.random() * (450 - item.left)),
+          top: Math.floor(Math.random() * 450),
+          left: Math.floor(Math.random() * 450),
         };
       });
   }
@@ -57,12 +58,13 @@ function Map() {
       () =>
         setPlayAnimation({
           animationPlayState: 'paused',
+          backgroundColor: 'rgba(0, 0, 0, 0)',
         }),
       3000,
     );
-    setTimeout(shuffle3times, 3100);
-    setTimeout(shuffle3times, 4100);
-    setTimeout(shuffle3times, 5100);
+    setTimeout(shuffle3times, 3000);
+    setTimeout(shuffle3times, 4000);
+    setTimeout(shuffle3times, 5000);
     setTimeout(() => setGameStatus(true), 5000);
   };
 
@@ -79,6 +81,7 @@ function Map() {
       ]);
     } else {
       e.target.style.backgroundColor = 'red';
+      e.target.parentElement.firstChild.style.animationPlayState = 'running';
       setStatus('Ты проиграл!');
       setGameStatus(false);
     }
@@ -102,13 +105,10 @@ function Map() {
       <h2>
         {status}
         {status === 'Угадал!' ? (
-          <button onClick={shuffle}>Next round</button>
+          <button onClick={shuffle}>Следующий Раунд</button>
         ) : (
           <>
-            <button onClick={resetGame}>New game</button>
-            <button onClick={() => gameDifficulty(3)}>3</button>
-            <button onClick={() => gameDifficulty(6)}>6</button>
-            <button onClick={() => gameDifficulty(10)}>10</button>
+            <button onClick={resetGame}>Новая Игра</button>
           </>
         )}
       </h2>
@@ -127,6 +127,9 @@ function Map() {
           <StartingScreen shuffle={shuffle} gameDifficulty={gameDifficulty} />
         )}
       </div>
+      <audio controls autoPlay>
+        <source src={music} type="audio/mpeg" />
+      </audio>
     </>
   );
 }

@@ -10,9 +10,8 @@ function StartingScreen(props) {
 
   const render = (
     <div className="starting-screen">
-      <button onClick={props.shuffle}>Start game</button>
-      <br />
-      <button onClick={() => changeOptions(true)}>Options</button>
+      <button onClick={props.shuffle}>Начать игру</button>
+      <button onClick={() => changeOptions(true)}>Опции</button>
     </div>
   );
   return displayOptions ? (
