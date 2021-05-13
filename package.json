@@ -1,35 +1,33 @@
 {
-  "name": "react-game",
+  "name": "barrels_of_fun",
   "version": "1.0.0",
-  "description": "a game for rs school",
+  "description": "Game created by Yaroslav Pitsur",
   "main": "index.js",
-  "scripts": {
-    "start": "node index.js",
-    "client": "cd client & npm start"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/StrongGarl1c/react-game.git"
-  },
-  "keywords": [
-    "game",
-    "react",
-    "nodejs",
-    "javascript"
-  ],
-  "author": "Yaroslav Pitsur",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/StrongGarl1c/react-game/issues"
-  },
-  "homepage": "https://github.com/StrongGarl1c/react-game#readme",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "mongodb": "^3.6.4"
+    "eslint": "^7.20.0",
+    "express": "^4.17.1"
   },
-  "devDependencies": {
-    "eslint": "^7.20.0"
-  }
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StrongGarl1c/barrels-of-fun.git"
+  },
+  "keywords": [
+    "html",
+    "css",
+    "javascript",
+    "react",
+    "game"
+  ],
+  "author": "Yaroslav Pitsur",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/StrongGarl1c/barrels-of-fun/issues"
+  },
+  "homepage": "https://github.com/StrongGarl1c/barrels-of-fun#readme"
 }

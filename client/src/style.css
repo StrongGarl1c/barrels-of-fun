@@ -26,22 +26,13 @@ body {
   cursor: pointer;
 }
 
-@keyframes example {
+@keyframes blink {
   from {
     background-color: rgba(0, 0, 0, 0);
   }
   to {
     background-color: yellow;
   }
-}
-
-.barrel:first-child {
-  animation-name: example;
-  animation-duration: 0.5s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-  animation-timing-function: ease-in-out;
-  animation-play-state: running;
 }
 
 .starting-screen {
@@ -59,4 +50,11 @@ body {
 
 h2 {
   margin: 0;
+}
+
+.difficulty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

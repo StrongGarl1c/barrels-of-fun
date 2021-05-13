@@ -1,37 +1,40 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './style.css';
 import Barrel from './Barrel';
 import StartingScreen from './StartingScreen';
-import music from './01_jeremy_soule_reign_of_the_septims_myzuka.fm.mp3';
 
 function Map() {
   const [startingBarrels, setStartingBarrels] = useState(3);
-  const [position, setPosition] = useState(fillArray());
-  const [playAnimation, setPlayAnimation] = useState({
-    animationPlayState: 'running',
-  });
+  const [playAnimation, setPlayAnimation] = useState(false);
+  const [animation, setAnimation] = useState('');
   const [reset, setReset] = useState(false);
   const [gameStatus, setGameStatus] = useState(false);
   const [gamesStart, setGameStart] = useState(false);
   const [status, setStatus] = useState('Найди веселую бочку!');
+  const [style, setStyle] = useState({
+    easy: { border: 'solid black 3px' },
+    normal: {},
+    hard: {},
+  });
 
-  useEffect(() => {
-    setPosition(fillArray());
-  }, [startingBarrels]);
-
-  function fillArray() {
-    return Array(startingBarrels)
-      .fill({
-        top: Math.floor(Math.random() * 450),
-        left: Math.floor(Math.random() * 450),
-      })
-      .map((item) => {
-        return {
+  const fillArray = useCallback(
+    function () {
+      return Array(startingBarrels)
+        .fill({
           top: Math.floor(Math.random() * 450),
           left: Math.floor(Math.random() * 450),
-        };
-      });
-  }
+        })
+        .map((item) => {
+          return {
+            top: Math.floor(Math.random() * 450),
+            left: Math.floor(Math.random() * 450),
+          };
+        });
+    },
+    [startingBarrels],
+  );
+
+  const [position, setPosition] = useState(fillArray());
 
   function set() {
     setPosition(
@@ -45,27 +48,18 @@ function Map() {
   }
 
   const shuffle = () => {
+    setPlayAnimation(true);
     setGameStart(true);
     setStatus('Найди веселую бочку!');
     function shuffle3times() {
-      set();
+      let i = 0;
+      for (i; i < startingBarrels; i++) {
+        setTimeout(set, (3 + i) * 1000);
+      }
+      setTimeout(() => setGameStatus(true), (startingBarrels + 3) * 1000);
+      setTimeout(() => setPlayAnimation(false), 3000);
     }
-
-    setPlayAnimation({
-      animationPlayState: 'running',
-    });
-    setTimeout(
-      () =>
-        setPlayAnimation({
-          animationPlayState: 'paused',
-          backgroundColor: 'rgba(0, 0, 0, 0)',
-        }),
-      3000,
-    );
-    setTimeout(shuffle3times, 3000);
-    setTimeout(shuffle3times, 4000);
-    setTimeout(shuffle3times, 5000);
-    setTimeout(() => setGameStatus(true), 5000);
+    shuffle3times();
   };
 
   function go(e) {
@@ -81,7 +75,7 @@ function Map() {
       ]);
     } else {
       e.target.style.backgroundColor = 'red';
-      e.target.parentElement.firstChild.style.animationPlayState = 'running';
+      e.target.parentElement.firstChild.style.backgroundColor = 'yellow';
       setStatus('Ты проиграл!');
       setGameStatus(false);
     }
@@ -99,37 +93,70 @@ function Map() {
     setStartingBarrels(diff);
   }
 
+  function button() {
+    if (status === 'Угадал!') {
+      return (
+        <button
+          onClick={() => {
+            shuffle();
+            setPlayAnimation(true);
+          }}
+        >
+          Следующий Раунд
+        </button>
+      );
+    } else if (gamesStart) {
+      return <button onClick={resetGame}>Новая Игра</button>;
+    }
+  }
+
+  function borders(obj) {
+    setStyle(obj);
+  }
+
+  useEffect(() => {
+    setPosition(fillArray());
+  }, [startingBarrels, fillArray]);
+
+  useEffect(() => {
+    playAnimation
+      ? setAnimation('blink 0.5s 6 alternate ease-in-out')
+      : setAnimation('');
+  }, [playAnimation]);
+
   return (
     <>
-      {/* <h1>Бочки Веселухи!</h1> */}
-      <h2>
-        {status}
-        {status === 'Угадал!' ? (
-          <button onClick={shuffle}>Следующий Раунд</button>
-        ) : (
-          <>
-            <button onClick={resetGame}>Новая Игра</button>
-          </>
-        )}
-      </h2>
+      <h2>{status}</h2>
       <div id="map">
         {gamesStart ? (
-          position.map((item, index) => (
-            <Barrel
-              key={index}
-              position={position[index]}
-              go={gameStatus ? go : null}
-              name={index}
-              animation={playAnimation}
-            />
-          ))
+          position.map((item, index) =>
+            index === 0 ? (
+              <Barrel
+                key={index}
+                position={position[index]}
+                go={gameStatus ? go : null}
+                name={index}
+                animation={animation}
+              />
+            ) : (
+              <Barrel
+                key={index}
+                position={position[index]}
+                go={gameStatus ? go : null}
+                name={index}
+              />
+            ),
+          )
         ) : (
-          <StartingScreen shuffle={shuffle} gameDifficulty={gameDifficulty} />
+          <StartingScreen
+            shuffle={shuffle}
+            gameDifficulty={gameDifficulty}
+            borders={borders}
+            style={style}
+          />
         )}
       </div>
-      <audio controls autoPlay>
-        <source src={music} type="audio/mpeg" />
-      </audio>
+      {button()}
     </>
   );
 }

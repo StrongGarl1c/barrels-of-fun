@@ -12,8 +12,8 @@ function Options(props) {
     <div className="starting-screen">
       <h2>Опции</h2>
       <button onClick={() => setDisplay(false)}>Сложность</button>
-      <button>Звук</button>
-      <button>Изображение</button>
+      <button disabled>Звук</button>
+      <button disabled>Изображение</button>
       <button onClick={() => props.changeOptions(false)}>Назад</button>
     </div>
   );
@@ -24,6 +24,8 @@ function Options(props) {
     <Difficulty
       changeDisplay={changeDisplay}
       gameDifficulty={props.gameDifficulty}
+      borders={props.borders}
+      style={props.style}
     />
   );
 }

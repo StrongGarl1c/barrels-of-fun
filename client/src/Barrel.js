@@ -9,8 +9,7 @@ function Barrel({ position, go, name, animation }) {
       style={{
         top: position.top,
         left: position.left,
-        animationPlayState: animation.animationPlayState,
-        backgroundColor: animation.backgroundColor,
+        animation: animation,
       }}
       className="barrel"
       name={name}

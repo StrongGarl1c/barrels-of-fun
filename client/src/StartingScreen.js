@@ -18,6 +18,8 @@ function StartingScreen(props) {
     <Options
       changeOptions={changeOptions}
       gameDifficulty={props.gameDifficulty}
+      borders={props.borders}
+      style={props.style}
     />
   ) : (
     render
