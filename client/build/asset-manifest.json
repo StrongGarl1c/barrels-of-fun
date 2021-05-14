@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/static/css/main.ee47c919.chunk.css",
+    "main.js": "/static/js/main.bb01011f.chunk.js",
+    "main.js.map": "/static/js/main.bb01011f.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.900dd88b.js",
+    "runtime-main.js.map": "/static/js/runtime-main.900dd88b.js.map",
+    "static/js/2.84ccbf5d.chunk.js": "/static/js/2.84ccbf5d.chunk.js",
+    "static/js/2.84ccbf5d.chunk.js.map": "/static/js/2.84ccbf5d.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/main.ee47c919.chunk.css.map": "/static/css/main.ee47c919.chunk.css.map",
+    "static/js/2.84ccbf5d.chunk.js.LICENSE.txt": "/static/js/2.84ccbf5d.chunk.js.LICENSE.txt",
+    "static/media/barrel3.2efe95e2.png": "/static/media/barrel3.2efe95e2.png",
+    "static/media/style.css": "/static/media/water.30684d16.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.900dd88b.js",
+    "static/js/2.84ccbf5d.chunk.js",
+    "static/css/main.ee47c919.chunk.css",
+    "static/js/main.bb01011f.chunk.js"
+  ]
+}
