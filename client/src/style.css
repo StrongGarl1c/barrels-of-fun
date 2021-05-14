@@ -58,3 +58,12 @@ h2 {
   justify-content: center;
   align-items: center;
 }
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  font-size: 20px;
+}

@@ -26,6 +26,7 @@ function Options(props) {
       gameDifficulty={props.gameDifficulty}
       borders={props.borders}
       style={props.style}
+      setDif={props.setDif}
     />
   );
 }

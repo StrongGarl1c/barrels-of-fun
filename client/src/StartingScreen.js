@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import LeaderBoard from './LeaderBoard';
 import Options from './Options';
 
 function StartingScreen(props) {
@@ -8,22 +9,43 @@ function StartingScreen(props) {
     setDisplayOptions(bool);
   }
 
-  const render = (
-    <div className="starting-screen">
-      <button onClick={props.shuffle}>Начать игру</button>
-      <button onClick={() => changeOptions(true)}>Опции</button>
-    </div>
-  );
-  return displayOptions ? (
-    <Options
-      changeOptions={changeOptions}
-      gameDifficulty={props.gameDifficulty}
-      borders={props.borders}
-      style={props.style}
-    />
-  ) : (
-    render
-  );
+  function render() {
+    if (displayOptions) {
+      return (
+        <Options
+          changeOptions={changeOptions}
+          gameDifficulty={props.gameDifficulty}
+          borders={props.borders}
+          style={props.style}
+          setDif={props.setDif}
+        />
+      );
+    } else if (props.showTop20) {
+      return <LeaderBoard top={props.top} displayTop20={props.displayTop20} />;
+    } else {
+      return (
+        <div className="starting-screen">
+          <button
+            onClick={() => {
+              let playerName;
+              if (!props.playerName) {
+                const p = prompt('Введите ник');
+                p ? (playerName = p) : (playerName = 'Гость');
+                props.setName(playerName);
+              }
+              props.setVisibility(true);
+              props.shuffle();
+            }}
+          >
+            Начать игру
+          </button>
+          <button onClick={() => props.displayTop20(true)}>Топ 20</button>
+          <button onClick={() => changeOptions(true)}>Опции</button>
+        </div>
+      );
+    }
+  }
+  return render();
 }
 
 export default StartingScreen;

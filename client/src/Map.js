@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import './style.css';
 import Barrel from './Barrel';
 import StartingScreen from './StartingScreen';
+import LeaderBoard from './LeaderBoard';
 
 function Map() {
   const [startingBarrels, setStartingBarrels] = useState(3);
@@ -16,6 +17,16 @@ function Map() {
     normal: {},
     hard: {},
   });
+  const [player, setPlayer] = useState({
+    name: '',
+    score: 0,
+  });
+  const [hidden, setHidden] = useState({
+    visibility: 'hidden',
+  });
+  const [difficulty, setDifficulty] = useState(1);
+  const [top20, setTop20] = useState([]);
+  const [showTop20, setShowTop20] = useState(false);
 
   const fillArray = useCallback(
     function () {
@@ -47,20 +58,17 @@ function Map() {
     );
   }
 
-  const shuffle = () => {
+  function shuffle() {
     setPlayAnimation(true);
     setGameStart(true);
     setStatus('Найди веселую бочку!');
-    function shuffle3times() {
-      let i = 0;
-      for (i; i < startingBarrels; i++) {
-        setTimeout(set, (3 + i) * 1000);
-      }
-      setTimeout(() => setGameStatus(true), (startingBarrels + 3) * 1000);
-      setTimeout(() => setPlayAnimation(false), 3000);
+    let i = 0;
+    for (i; i < startingBarrels; i++) {
+      setTimeout(set, (3 + i) * 1000);
     }
-    shuffle3times();
-  };
+    setTimeout(() => setGameStatus(true), (startingBarrels + 3) * 1000);
+    setTimeout(() => setPlayAnimation(false), 2000);
+  }
 
   function go(e) {
     if (parseInt(e.target.name) === 0) {
@@ -73,11 +81,37 @@ function Map() {
           left: Math.floor(Math.random() * 450),
         },
       ]);
+      setPlayer({
+        ...player,
+        score: (player.score += position.length * difficulty),
+      });
     } else {
       e.target.style.backgroundColor = 'red';
       e.target.parentElement.firstChild.style.backgroundColor = 'yellow';
       setStatus('Ты проиграл!');
       setGameStatus(false);
+      (async function () {
+        try {
+          const response = await fetch('/api', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(player),
+          });
+          const data = await response.json();
+          setTop20(data);
+          // setShowTop20(true);
+        } catch (error) {
+          console.error(error);
+        }
+      })();
+      setTimeout(() => {
+        // eslint-disable-next-line no-restricted-globals
+        if (confirm('Показать топ 20?')) {
+          setShowTop20(true);
+        }
+      }, 3000);
     }
   }
 
@@ -87,6 +121,8 @@ function Map() {
     setPosition(fillArray());
     setStatus('Найди веселую бочку!');
     setReset(!reset);
+    setVisibility(false);
+    setPlayer({ ...player, score: 0 });
   }
 
   function gameDifficulty(diff) {
@@ -99,7 +135,6 @@ function Map() {
         <button
           onClick={() => {
             shuffle();
-            setPlayAnimation(true);
           }}
         >
           Следующий Раунд
@@ -114,6 +149,34 @@ function Map() {
     setStyle(obj);
   }
 
+  function setName(name) {
+    setPlayer({ ...player, name: name });
+  }
+
+  function setVisibility(bool) {
+    return bool
+      ? setHidden({ visibility: '' })
+      : setHidden({ visibility: 'hidden' });
+  }
+
+  function setDif(numb) {
+    setDifficulty(numb);
+  }
+
+  const getData = useCallback(async () => {
+    try {
+      const res = await fetch('/api');
+      const data = await res.json();
+      setTop20(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  function displayTop20(bool) {
+    setShowTop20(bool);
+  }
+
   useEffect(() => {
     setPosition(fillArray());
   }, [startingBarrels, fillArray]);
@@ -124,38 +187,56 @@ function Map() {
       : setAnimation('');
   }, [playAnimation]);
 
+  useEffect(() => {
+    getData();
+  }, [getData]);
+
+  function render() {
+    if (showTop20) {
+      return <LeaderBoard top={top20} displayTop20={displayTop20} />;
+    } else if (gamesStart) {
+      return position.map((item, index) =>
+        index === 0 ? (
+          <Barrel
+            key={index}
+            position={position[index]}
+            go={gameStatus ? go : null}
+            name={index}
+            animation={animation}
+          />
+        ) : (
+          <Barrel
+            key={index}
+            position={position[index]}
+            go={gameStatus ? go : null}
+            name={index}
+          />
+        ),
+      );
+    } else {
+      return (
+        <StartingScreen
+          shuffle={shuffle}
+          gameDifficulty={gameDifficulty}
+          borders={borders}
+          style={style}
+          setName={setName}
+          setVisibility={setVisibility}
+          playerName={player.name}
+          setDif={setDif}
+          top={top20}
+          showTop20={showTop20}
+          displayTop20={displayTop20}
+        />
+      );
+    }
+  }
+
   return (
     <>
       <h2>{status}</h2>
-      <div id="map">
-        {gamesStart ? (
-          position.map((item, index) =>
-            index === 0 ? (
-              <Barrel
-                key={index}
-                position={position[index]}
-                go={gameStatus ? go : null}
-                name={index}
-                animation={animation}
-              />
-            ) : (
-              <Barrel
-                key={index}
-                position={position[index]}
-                go={gameStatus ? go : null}
-                name={index}
-              />
-            ),
-          )
-        ) : (
-          <StartingScreen
-            shuffle={shuffle}
-            gameDifficulty={gameDifficulty}
-            borders={borders}
-            style={style}
-          />
-        )}
-      </div>
+      <h2 style={hidden}>{`${player.name} Очки: ${player.score}`}</h2>
+      <div id="map">{render()}</div>
       {button()}
     </>
   );

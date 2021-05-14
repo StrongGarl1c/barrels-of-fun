@@ -9,6 +9,7 @@ function Difficulty(props) {
           onClick={(e) => {
             props.gameDifficulty(3);
             props.borders({ easy: { border: border } });
+            props.setDif(1);
           }}
         >
           Легкая
@@ -18,6 +19,7 @@ function Difficulty(props) {
           onClick={(e) => {
             props.gameDifficulty(6);
             props.borders({ normal: { border: border } });
+            props.setDif(2);
           }}
         >
           Нормальная
@@ -27,6 +29,7 @@ function Difficulty(props) {
           onClick={(e) => {
             props.gameDifficulty(10);
             props.borders({ hard: { border: border } });
+            props.setDif(3);
           }}
         >
           Сложная
