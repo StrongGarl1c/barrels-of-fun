@@ -12,7 +12,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "cd client && npm start"
   },
   "repository": {
     "type": "git",

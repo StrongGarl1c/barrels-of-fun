@@ -12,6 +12,7 @@ function Map() {
   const [gameStatus, setGameStatus] = useState(false);
   const [gamesStart, setGameStart] = useState(false);
   const [status, setStatus] = useState('Найди веселую бочку!');
+  const [gameOver, setGameOver] = useState(false);
   const [style, setStyle] = useState({
     easy: { border: 'solid black 3px' },
     normal: {},
@@ -48,14 +49,14 @@ function Map() {
   const [position, setPosition] = useState(fillArray());
 
   function set() {
-    setPosition(
-      position.map((item) => {
+    setPosition((prevState) => {
+      return prevState.map((item) => {
         return {
           top: Math.floor(Math.random() * (450 - item.top)),
           left: Math.floor(Math.random() * (450 - item.left)),
         };
-      }),
-    );
+      });
+    });
   }
 
   function shuffle() {
@@ -67,29 +68,33 @@ function Map() {
       setTimeout(set, (3 + i) * 1000);
     }
     setTimeout(() => setGameStatus(true), (startingBarrels + 3) * 1000);
-    setTimeout(() => setPlayAnimation(false), 2000);
+    setTimeout(() => setPlayAnimation(false), 3000);
   }
 
   function go(e) {
     if (parseInt(e.target.name) === 0) {
       setStatus('Угадал!');
       setGameStatus(false);
-      setPosition([
-        ...position,
+      setPosition((prevState) => [
+        ...prevState,
         {
           top: Math.floor(Math.random() * 450),
           left: Math.floor(Math.random() * 450),
         },
       ]);
-      setPlayer({
-        ...player,
-        score: (player.score += position.length * difficulty),
+      setPlayer((prevState) => {
+        return {
+          ...prevState,
+          score: (player.score += position.length * difficulty),
+        };
       });
+      shuffle();
     } else {
       e.target.style.backgroundColor = 'red';
       e.target.parentElement.firstChild.style.backgroundColor = 'yellow';
       setStatus('Ты проиграл!');
       setGameStatus(false);
+      setGameOver(true);
       (async function () {
         try {
           const response = await fetch('/api', {
@@ -111,7 +116,7 @@ function Map() {
         if (confirm('Показать топ 20?')) {
           setShowTop20(true);
         }
-      }, 3000);
+      }, 2000);
     }
   }
 
@@ -122,7 +127,11 @@ function Map() {
     setStatus('Найди веселую бочку!');
     setReset(!reset);
     setVisibility(false);
-    setPlayer({ ...player, score: 0 });
+    setPlayer((prevState) => {
+      return { ...prevState, score: 0 };
+    });
+    setGameOver(false);
+    setShowTop20(false);
   }
 
   function gameDifficulty(diff) {
@@ -130,17 +139,7 @@ function Map() {
   }
 
   function button() {
-    if (status === 'Угадал!') {
-      return (
-        <button
-          onClick={() => {
-            shuffle();
-          }}
-        >
-          Следующий Раунд
-        </button>
-      );
-    } else if (gamesStart) {
+    if (gameStatus || gameOver) {
       return <button onClick={resetGame}>Новая Игра</button>;
     }
   }
@@ -150,7 +149,9 @@ function Map() {
   }
 
   function setName(name) {
-    setPlayer({ ...player, name: name });
+    setPlayer((prevState) => {
+      return { ...prevState, name: name };
+    });
   }
 
   function setVisibility(bool) {
