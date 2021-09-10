@@ -9,7 +9,7 @@ function Options(props) {
   }
 
   const render = (
-    <div className="starting-screen">
+    <div className='starting-screen'>
       <h2>Опции</h2>
       <button onClick={() => setDisplay(false)}>Сложность</button>
       <button disabled>Звук</button>
@@ -26,7 +26,7 @@ function Options(props) {
       gameDifficulty={props.gameDifficulty}
       borders={props.borders}
       style={props.style}
-      setDif={props.setDif}
+      setDifficulty={props.setDifficulty}
     />
   );
 }

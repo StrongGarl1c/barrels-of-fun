@@ -3,6 +3,7 @@ import './style.css';
 import Barrel from './Barrel';
 import StartingScreen from './StartingScreen';
 import LeaderBoard from './LeaderBoard';
+import barrelsWithRandomPosition from './functions/barrelsWithRandomPosition';
 
 function Map() {
   const [startingBarrels, setStartingBarrels] = useState(3);
@@ -28,53 +29,31 @@ function Map() {
   const [difficulty, setDifficulty] = useState(1);
   const [top20, setTop20] = useState([]);
   const [showTop20, setShowTop20] = useState(false);
-
-  const fillArray = useCallback(
-    function () {
-      return Array(startingBarrels)
-        .fill({
-          top: Math.floor(Math.random() * 450),
-          left: Math.floor(Math.random() * 450),
-        })
-        .map((item) => {
-          return {
-            top: Math.floor(Math.random() * 450),
-            left: Math.floor(Math.random() * 450),
-          };
-        });
-    },
-    [startingBarrels],
+  const [position, setPosition] = useState(
+    barrelsWithRandomPosition(startingBarrels),
   );
 
-  const [position, setPosition] = useState(fillArray());
-
-  function set() {
-    setPosition((prevState) => {
-      return prevState.map((item) => {
-        return {
-          top: Math.floor(Math.random() * (450 - item.top)),
-          left: Math.floor(Math.random() * (450 - item.left)),
-        };
-      });
-    });
+  function setNewPosition() {
+    setPosition((prevState) => barrelsWithRandomPosition(prevState.length));
   }
 
   function shuffle() {
     setPlayAnimation(true);
     setGameStart(true);
     setStatus('Найди веселую бочку!');
-    let i = 0;
-    for (i; i < startingBarrels; i++) {
-      setTimeout(set, (3 + i) * 1000);
+    for (let i = 0; i < startingBarrels; i++) {
+      setTimeout(setNewPosition, (3 + i) * 1000);
     }
     setTimeout(() => setGameStatus(true), (startingBarrels + 3) * 1000);
     setTimeout(() => setPlayAnimation(false), 3000);
   }
 
-  function go(e) {
+  function checkGuess(e) {
+    // if guess is correct
     if (parseInt(e.target.name) === 0) {
       setStatus('Угадал!');
       setGameStatus(false);
+      // to do add a new barrel with no collission
       setPosition((prevState) => [
         ...prevState,
         {
@@ -85,10 +64,11 @@ function Map() {
       setPlayer((prevState) => {
         return {
           ...prevState,
-          score: (player.score += position.length * difficulty),
+          score: (player.score += (position.length - 1) * difficulty),
         };
       });
       shuffle();
+      // if guess is wrong
     } else {
       e.target.style.backgroundColor = 'red';
       e.target.parentElement.firstChild.style.backgroundColor = 'yellow';
@@ -106,7 +86,6 @@ function Map() {
           });
           const data = await response.json();
           setTop20(data);
-          // setShowTop20(true);
         } catch (error) {
           console.error(error);
         }
@@ -123,7 +102,7 @@ function Map() {
   function resetGame() {
     setGameStatus(false);
     setGameStart(false);
-    setPosition(fillArray());
+    setPosition(barrelsWithRandomPosition(startingBarrels));
     setStatus('Найди веселую бочку!');
     setReset(!reset);
     setVisibility(false);
@@ -160,10 +139,6 @@ function Map() {
       : setHidden({ visibility: 'hidden' });
   }
 
-  function setDif(numb) {
-    setDifficulty(numb);
-  }
-
   const getData = useCallback(async () => {
     try {
       const res = await fetch('/api');
@@ -179,8 +154,8 @@ function Map() {
   }
 
   useEffect(() => {
-    setPosition(fillArray());
-  }, [startingBarrels, fillArray]);
+    setPosition(barrelsWithRandomPosition(startingBarrels));
+  }, [startingBarrels]);
 
   useEffect(() => {
     playAnimation
@@ -201,7 +176,7 @@ function Map() {
           <Barrel
             key={index}
             position={position[index]}
-            go={gameStatus ? go : null}
+            go={gameStatus ? checkGuess : null}
             name={index}
             animation={animation}
           />
@@ -209,7 +184,7 @@ function Map() {
           <Barrel
             key={index}
             position={position[index]}
-            go={gameStatus ? go : null}
+            go={gameStatus ? checkGuess : null}
             name={index}
           />
         ),
@@ -224,7 +199,7 @@ function Map() {
           setName={setName}
           setVisibility={setVisibility}
           playerName={player.name}
-          setDif={setDif}
+          setDifficulty={setDifficulty}
           top={top20}
           showTop20={showTop20}
           displayTop20={displayTop20}
@@ -237,7 +212,7 @@ function Map() {
     <>
       <h2>{status}</h2>
       <h2 style={hidden}>{`${player.name} Очки: ${player.score}`}</h2>
-      <div id="map">{render()}</div>
+      <div id='map'>{render()}</div>
       {button()}
     </>
   );

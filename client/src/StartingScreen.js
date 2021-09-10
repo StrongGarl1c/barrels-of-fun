@@ -17,14 +17,14 @@ function StartingScreen(props) {
           gameDifficulty={props.gameDifficulty}
           borders={props.borders}
           style={props.style}
-          setDif={props.setDif}
+          setDifficulty={props.setDifficulty}
         />
       );
     } else if (props.showTop20) {
       return <LeaderBoard top={props.top} displayTop20={props.displayTop20} />;
     } else {
       return (
-        <div className="starting-screen">
+        <div className='starting-screen'>
           <button
             onClick={() => {
               let playerName;
