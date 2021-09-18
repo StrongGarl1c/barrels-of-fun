@@ -5,15 +5,11 @@ import Options from './Options';
 function StartingScreen(props) {
   const [displayOptions, setDisplayOptions] = useState(false);
 
-  function changeOptions(bool) {
-    setDisplayOptions(bool);
-  }
-
   function render() {
     if (displayOptions) {
       return (
         <Options
-          changeOptions={changeOptions}
+          changeOptions={setDisplayOptions}
           gameDifficulty={props.gameDifficulty}
           borders={props.borders}
           style={props.style}
@@ -40,7 +36,7 @@ function StartingScreen(props) {
             Начать игру
           </button>
           <button onClick={() => props.displayTop20(true)}>Топ 20</button>
-          <button onClick={() => changeOptions(true)}>Опции</button>
+          <button onClick={() => setDisplayOptions(true)}>Опции</button>
         </div>
       );
     }

@@ -1,17 +1,17 @@
-import image from './barrel3.png';
+import image from '../assets/barrel3.png';
 
 function Barrel({ position, go, name, animation }) {
   return (
     <img
       src={image}
-      alt="barrel"
+      alt='barrel'
       onClick={go}
       style={{
         top: position.top,
         left: position.left,
         animation: animation,
       }}
-      className="barrel"
+      className='barrel'
       name={name}
     ></img>
   );

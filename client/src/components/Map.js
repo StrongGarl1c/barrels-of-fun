@@ -3,8 +3,10 @@ import './style.css';
 import Barrel from './Barrel';
 import StartingScreen from './StartingScreen';
 import LeaderBoard from './LeaderBoard';
-import barrelsWithRandomPosition from './functions/barrelsWithRandomPosition';
-import newBarrelAtRandomPosition from './functions/newBarrelAtRandomPosition';
+import barrelsWithRandomPosition from '../functions/barrelsWithRandomPosition';
+import newBarrelAtRandomPosition from '../functions/newBarrelAtRandomPosition';
+import { getDataFromTheServer, sendResultToTheServer } from '../api/api';
+import Button from './Button';
 
 function Map() {
   const [startingBarrels, setStartingBarrels] = useState(3);
@@ -66,28 +68,14 @@ function Map() {
         };
       });
       shuffle();
-      // if guess is wrong
     } else {
+      // if guess is wrong
       e.target.style.backgroundColor = 'red';
       e.target.parentElement.firstChild.style.backgroundColor = 'yellow';
       setStatus('Ты проиграл!');
       setGameStatus(false);
       setGameOver(true);
-      (async function () {
-        try {
-          const response = await fetch('/api', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(player),
-          });
-          const data = await response.json();
-          setTop20(data);
-        } catch (error) {
-          console.error(error);
-        }
-      })();
+      sendResultToTheServer(player).then((res) => setTop20(res));
       setTimeout(() => {
         // eslint-disable-next-line no-restricted-globals
         if (confirm('Показать топ 20?')) {
@@ -115,16 +103,6 @@ function Map() {
     setStartingBarrels(diff);
   }
 
-  function button() {
-    if (gameStatus || gameOver) {
-      return <button onClick={resetGame}>Новая Игра</button>;
-    }
-  }
-
-  function borders(obj) {
-    setStyle(obj);
-  }
-
   function setName(name) {
     setPlayer((prevState) => {
       return { ...prevState, name: name };
@@ -137,19 +115,10 @@ function Map() {
       : setHidden({ visibility: 'hidden' });
   }
 
-  const getData = useCallback(async () => {
-    try {
-      const res = await fetch('/api');
-      const data = await res.json();
-      setTop20(data);
-    } catch (error) {
-      console.error(error);
-    }
+  const getDataFromTheServerAndSetTop20 = useCallback(async () => {
+    const data = await getDataFromTheServer();
+    setTop20(data);
   }, []);
-
-  function displayTop20(bool) {
-    setShowTop20(bool);
-  }
 
   useEffect(() => {
     setPosition(barrelsWithRandomPosition(startingBarrels));
@@ -162,12 +131,12 @@ function Map() {
   }, [playAnimation]);
 
   useEffect(() => {
-    getData();
-  }, [getData]);
+    getDataFromTheServerAndSetTop20();
+  }, [getDataFromTheServerAndSetTop20]);
 
   function render() {
     if (showTop20) {
-      return <LeaderBoard top={top20} displayTop20={displayTop20} />;
+      return <LeaderBoard top={top20} displayTop20={setShowTop20} />;
     } else if (gamesStart) {
       return position.map((item, index) =>
         index === 0 ? (
@@ -192,7 +161,7 @@ function Map() {
         <StartingScreen
           shuffle={shuffle}
           gameDifficulty={gameDifficulty}
-          borders={borders}
+          borders={setStyle}
           style={style}
           setName={setName}
           setVisibility={setVisibility}
@@ -200,7 +169,7 @@ function Map() {
           setDifficulty={setDifficulty}
           top={top20}
           showTop20={showTop20}
-          displayTop20={displayTop20}
+          displayTop20={setShowTop20}
         />
       );
     }
@@ -211,7 +180,13 @@ function Map() {
       <h2>{status}</h2>
       <h2 style={hidden}>{`${player.name} Очки: ${player.score}`}</h2>
       <div id='map'>{render()}</div>
-      {button()}
+      {(gameStatus || gameOver) && (
+        <Button
+          gameStatus={gameStatus}
+          gameOver={gameOver}
+          resetGame={resetGame}
+        />
+      )}
     </>
   );
 }

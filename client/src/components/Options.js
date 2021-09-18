@@ -4,10 +4,6 @@ import Difficulty from './Difficulty';
 function Options(props) {
   const [display, setDisplay] = useState(true);
 
-  function changeDisplay() {
-    setDisplay(true);
-  }
-
   const render = (
     <div className='starting-screen'>
       <h2>Опции</h2>
@@ -22,7 +18,7 @@ function Options(props) {
     render
   ) : (
     <Difficulty
-      changeDisplay={changeDisplay}
+      changeDisplay={setDisplay}
       gameDifficulty={props.gameDifficulty}
       borders={props.borders}
       style={props.style}

@@ -34,7 +34,7 @@ function Difficulty(props) {
         >
           Сложная
         </button>
-        <button onClick={() => props.changeDisplay()}>Назад</button>
+        <button onClick={() => props.changeDisplay(true)}>Назад</button>
       </div>
     </div>
   );
