@@ -62,7 +62,7 @@ router.post('/', async function (req, res) {
 
       // send new top 20 back to client
       const data = await cursor.toArray();
-      res.json(data);
+      res.status(201).json(data);
     }
     res.status(200).send();
   } catch (error) {

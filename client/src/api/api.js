@@ -1,6 +1,5 @@
-const url = 'http://localhost:5000/api';
-// const url = '/api';
-
+const url =
+  process.env.NODE_ENV === 'development' ? 'http://localhost:5000/api' : '/api';
 export async function sendResultToTheServer(player) {
   try {
     const res = await fetch(url, {
@@ -10,7 +9,10 @@ export async function sendResultToTheServer(player) {
       },
       body: JSON.stringify(player),
     });
-    return await res.json();
+    if (res.status === 201) {
+      return await res.json();
+    }
+    return null;
   } catch (error) {
     console.error(error);
   }

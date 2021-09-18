@@ -10,7 +10,7 @@ function StartingScreen(props) {
       return (
         <Options
           changeOptions={setDisplayOptions}
-          gameDifficulty={props.gameDifficulty}
+          startingBarrels={props.startingBarrels}
           borders={props.borders}
           style={props.style}
           setDifficulty={props.setDifficulty}
@@ -27,7 +27,9 @@ function StartingScreen(props) {
               if (!props.playerName) {
                 const p = prompt('Введите ник');
                 p ? (playerName = p) : (playerName = 'Гость');
-                props.setName(playerName);
+                props.setName((prevState) => {
+                  return { ...prevState, name: playerName };
+                });
               }
               props.setVisibility(true);
               props.shuffle();

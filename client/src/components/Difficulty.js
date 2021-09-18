@@ -7,7 +7,7 @@ function Difficulty(props) {
         <button
           style={props.style.easy}
           onClick={() => {
-            props.gameDifficulty(3);
+            props.startingBarrels(3);
             props.borders({ easy: { border: border } });
             props.setDifficulty(1);
           }}
@@ -17,7 +17,7 @@ function Difficulty(props) {
         <button
           style={props.style.normal}
           onClick={() => {
-            props.gameDifficulty(6);
+            props.startingBarrels(6);
             props.borders({ normal: { border: border } });
             props.setDifficulty(2);
           }}
@@ -27,7 +27,7 @@ function Difficulty(props) {
         <button
           style={props.style.hard}
           onClick={() => {
-            props.gameDifficulty(10);
+            props.startingBarrels(10);
             props.borders({ hard: { border: border } });
             props.setDifficulty(3);
           }}

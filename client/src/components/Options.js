@@ -19,7 +19,7 @@ function Options(props) {
   ) : (
     <Difficulty
       changeDisplay={setDisplay}
-      gameDifficulty={props.gameDifficulty}
+      startingBarrels={props.startingBarrels}
       borders={props.borders}
       style={props.style}
       setDifficulty={props.setDifficulty}

@@ -64,7 +64,7 @@ function Map() {
       setPlayer((prevState) => {
         return {
           ...prevState,
-          score: (player.score += (position.length - 1) * difficulty),
+          score: (player.score += position.length * difficulty),
         };
       });
       shuffle();
@@ -75,13 +75,13 @@ function Map() {
       setStatus('Ты проиграл!');
       setGameStatus(false);
       setGameOver(true);
-      sendResultToTheServer(player).then((res) => setTop20(res));
+      sendResultToTheServer(player).then((res) => (res ? setTop20(res) : null));
       setTimeout(() => {
         // eslint-disable-next-line no-restricted-globals
         if (confirm('Показать топ 20?')) {
           setShowTop20(true);
         }
-      }, 2000);
+      }, 1000);
     }
   }
 
@@ -97,16 +97,6 @@ function Map() {
     });
     setGameOver(false);
     setShowTop20(false);
-  }
-
-  function gameDifficulty(diff) {
-    setStartingBarrels(diff);
-  }
-
-  function setName(name) {
-    setPlayer((prevState) => {
-      return { ...prevState, name: name };
-    });
   }
 
   function setVisibility(bool) {
@@ -160,10 +150,10 @@ function Map() {
       return (
         <StartingScreen
           shuffle={shuffle}
-          gameDifficulty={gameDifficulty}
+          startingBarrels={setStartingBarrels}
           borders={setStyle}
           style={style}
-          setName={setName}
+          setName={setPlayer}
           setVisibility={setVisibility}
           playerName={player.name}
           setDifficulty={setDifficulty}
