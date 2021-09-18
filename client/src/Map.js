@@ -4,6 +4,7 @@ import Barrel from './Barrel';
 import StartingScreen from './StartingScreen';
 import LeaderBoard from './LeaderBoard';
 import barrelsWithRandomPosition from './functions/barrelsWithRandomPosition';
+import newBarrelAtRandomPosition from './functions/newBarrelAtRandomPosition';
 
 function Map() {
   const [startingBarrels, setStartingBarrels] = useState(3);
@@ -53,13 +54,10 @@ function Map() {
     if (parseInt(e.target.name) === 0) {
       setStatus('Угадал!');
       setGameStatus(false);
-      // to do add a new barrel with no collission
+      // add a new barrel with no collission
       setPosition((prevState) => [
         ...prevState,
-        {
-          top: Math.floor(Math.random() * 450),
-          left: Math.floor(Math.random() * 450),
-        },
+        newBarrelAtRandomPosition(prevState),
       ]);
       setPlayer((prevState) => {
         return {
