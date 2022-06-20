@@ -6,11 +6,11 @@ function Options(props) {
 
   const render = (
     <div className='starting-screen'>
-      <h2>Опции</h2>
-      <button onClick={() => setDisplay(false)}>Сложность</button>
-      <button disabled>Звук</button>
-      <button disabled>Изображение</button>
-      <button onClick={() => props.changeOptions(false)}>Назад</button>
+      <h2>Options</h2>
+      <button onClick={() => setDisplay(false)}>Difficulty</button>
+      <button disabled>Sound</button>
+      <button disabled>Graphics</button>
+      <button onClick={() => props.changeOptions(false)}>Back</button>
     </div>
   );
 

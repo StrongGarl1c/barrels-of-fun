@@ -19,7 +19,7 @@ function LeaderBoard(props) {
           );
         })}
       </ul>
-      <button onClick={() => props.displayTop20(false)}>Назад</button>
+      <button onClick={() => props.displayTop20(false)}>Back</button>
     </>
   );
 }

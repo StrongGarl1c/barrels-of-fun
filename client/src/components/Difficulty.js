@@ -2,7 +2,7 @@ function Difficulty(props) {
   const border = 'solid black 3px';
   return (
     <div className='starting-screen'>
-      <h2>Сложность</h2>
+      <h2>Difficulty</h2>
       <div className='difficulty'>
         <button
           style={props.style.easy}
@@ -12,7 +12,7 @@ function Difficulty(props) {
             props.setDifficulty(1);
           }}
         >
-          Легкая
+          Easy
         </button>
         <button
           style={props.style.normal}
@@ -22,7 +22,7 @@ function Difficulty(props) {
             props.setDifficulty(2);
           }}
         >
-          Нормальная
+          Normal
         </button>
         <button
           style={props.style.hard}
@@ -32,9 +32,9 @@ function Difficulty(props) {
             props.setDifficulty(3);
           }}
         >
-          Сложная
+          Hard
         </button>
-        <button onClick={() => props.changeDisplay(true)}>Назад</button>
+        <button onClick={() => props.changeDisplay(true)}>Back</button>
       </div>
     </div>
   );

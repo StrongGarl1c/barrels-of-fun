@@ -15,7 +15,7 @@ function Map() {
   const [reset, setReset] = useState(false);
   const [gameStatus, setGameStatus] = useState(false);
   const [gamesStart, setGameStart] = useState(false);
-  const [status, setStatus] = useState('Найди веселую бочку!');
+  const [status, setStatus] = useState('Find the funny barrel!');
   const [gameOver, setGameOver] = useState(false);
   const [style, setStyle] = useState({
     easy: { border: 'solid black 3px' },
@@ -43,7 +43,7 @@ function Map() {
   function shuffle() {
     setPlayAnimation(true);
     setGameStart(true);
-    setStatus('Найди веселую бочку!');
+    setStatus('Find the funny barrel!');
     for (let i = 0; i < startingBarrels; i++) {
       setTimeout(setNewPosition, (3 + i) * 1000);
     }
@@ -54,7 +54,7 @@ function Map() {
   function checkGuess(e) {
     // if guess is correct
     if (parseInt(e.target.name) === 0) {
-      setStatus('Угадал!');
+      setStatus('Correct!');
       setGameStatus(false);
       // add a new barrel with no collission
       setPosition((prevState) => [
@@ -72,13 +72,13 @@ function Map() {
       // if guess is wrong
       e.target.style.backgroundColor = 'red';
       e.target.parentElement.firstChild.style.backgroundColor = 'yellow';
-      setStatus('Ты проиграл!');
+      setStatus('You lose!');
       setGameStatus(false);
       setGameOver(true);
       sendResultToTheServer(player).then((res) => (res ? setTop20(res) : null));
       setTimeout(() => {
         // eslint-disable-next-line no-restricted-globals
-        if (confirm('Показать топ 20?')) {
+        if (confirm('Show top 20?')) {
           setShowTop20(true);
         }
       }, 1000);
@@ -89,7 +89,7 @@ function Map() {
     setGameStatus(false);
     setGameStart(false);
     setPosition(barrelsWithRandomPosition(startingBarrels));
-    setStatus('Найди веселую бочку!');
+    setStatus('Find the funny barrel!');
     setReset(!reset);
     setVisibility(false);
     setPlayer((prevState) => {
@@ -168,7 +168,7 @@ function Map() {
   return (
     <>
       <h2>{status}</h2>
-      <h2 style={hidden}>{`${player.name} Очки: ${player.score}`}</h2>
+      <h2 style={hidden}>{`${player.name} Score: ${player.score}`}</h2>
       <div id='map'>{render()}</div>
       {(gameStatus || gameOver) && (
         <Button

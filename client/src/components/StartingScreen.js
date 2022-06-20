@@ -25,8 +25,8 @@ function StartingScreen(props) {
             onClick={() => {
               let playerName;
               if (!props.playerName) {
-                const p = prompt('Введите ник');
-                p ? (playerName = p) : (playerName = 'Гость');
+                const p = prompt('Enter nickname');
+                p ? (playerName = p) : (playerName = 'Guest');
                 props.setName((prevState) => {
                   return { ...prevState, name: playerName };
                 });
@@ -35,10 +35,10 @@ function StartingScreen(props) {
               props.shuffle();
             }}
           >
-            Начать игру
+            Start game
           </button>
-          <button onClick={() => props.displayTop20(true)}>Топ 20</button>
-          <button onClick={() => setDisplayOptions(true)}>Опции</button>
+          <button onClick={() => props.displayTop20(true)}>Top 20</button>
+          <button onClick={() => setDisplayOptions(true)}>Options</button>
         </div>
       );
     }
